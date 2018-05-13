@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --env development",
+    "start": "webpack-dev-server --env development",
     "build": "webpack --env production"
   },
   "repository": {
