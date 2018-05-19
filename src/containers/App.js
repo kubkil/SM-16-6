@@ -1,49 +1,57 @@
 import React from 'react';
 import uuid from 'uuid';
-import style from '../../styles/App.css';
+import styles from '../../styles/App.css';
 import Title from '../components/Title.js';
 import TodoList from '../components/TodoList.js';
+import AddTodo from '../components/AddTodo.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [{
-        id: 1,
-        text: 'clean room'
-      }, {
-        id: 2,
-        text: 'wash the dishes'
-      }, {
-        id: 3,
-        text: 'feed my cat'
-      }, {
-        id: 4,
-        text: 'shopping'
-      }]
+      todoText: '',
+      todos: [
+        {
+          id: 1,
+          text: 'clean room'
+        }
+      ]
     };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  addTodo(val) {
+  onChange(event) {
+    this.setState({ todoText: event.target.value });
+  };
+
+  onSubmit(event) {
+    event.preventDefault();
     const todo = {
-      text: val,
       id: uuid.v4(),
+      text: this.state.todoText
     };
-    // like push but does not modify the state
-    const data = [...this.state.data, todo];
-    this.setState({data});
-  }
+    this.setState({
+      todoText: '',
+      todos: [...this.state.todos, todo]
+    });
+  };
 
   removeTodo(id) {
-    const remainder = this.state.data.filter(todo => todo.id !== id);
-    this.setState({data: remainder});
+    const remainder = this.state.todos.filter(todo => todo.id !== id);
+    this.setState({ todos: remainder });
   }
 
   render() {
     return (
-      <div className={style.TodoApp}>
-        <Title title='ToDo' numberoftasks={this.state.data.length} />
-        <TodoList data={this.state.data} remove={this.removeTodo.bind(this)} />
+      <div className={styles.container}>
+        <Title title='ToDo' numberOfTasks={this.state.todos.length} />
+        <AddTodo
+          onSubmit={this.onSubmit}
+          todoText={this.state.todoText}
+          onChange={this.onChange}
+        />
+        <TodoList todos={this.state.todos} remove={this.removeTodo.bind(this)} />
       </div>
     );
   }
