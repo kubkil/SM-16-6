@@ -1,6 +1,9 @@
 .todo {
-  text-transform: capitalize;
   margin: 2% 0;
+}
+
+.todo::first-letter {
+  text-transform: uppercase;
 }
 
 .todo button {
